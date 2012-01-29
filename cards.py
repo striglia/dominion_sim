@@ -32,7 +32,8 @@ class Card(object):
         pass
     def on_action(self, game):
         pass
-    def vp(self, deck):
+    @staticmethod
+    def vp(deck):
         return 0
 
 """Base Victory and Money cards."""
@@ -40,25 +41,33 @@ class Province(Card):
     name = 'Province'
     price = 8
     is_implemented = True
-    def vp(self, deck):
+
+    @staticmethod
+    def vp(deck):
         return 6
 class Duchy(Card):
     name = 'Duchy'
     price = 5
     is_implemented = True
-    def vp(self, deck):
+ 
+    @staticmethod
+    def vp(deck):
         return 3
 class Estate(Card):
     name = 'Estate'
     price = 2
     is_implemented = True
-    def vp(self, deck):
+
+    @staticmethod
+    def vp(deck):
         return 1
 class Curse(Card):
     name = 'Curse'
     price = 0
     is_implemented = True
-    def vp(self, deck):
+
+    @staticmethod
+    def vp(deck):
         return -1
 class Gold(Card):
     name = 'Gold'
