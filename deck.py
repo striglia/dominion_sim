@@ -23,7 +23,7 @@ class Deck(object):
     # Default constants for the game
     HAND_SIZE = 5
 
-    def __init__(self):
+    def __init__(self, deck):
         """Initializes the default deck (3 estate, 7 copper)."""
         self.draw_pile = []
         self.hand = []
@@ -31,7 +31,7 @@ class Deck(object):
         self.trash_pile = []
         self.action_coins = 0
 
-        self.init_draw_pile(cards.STARTING_DECK)
+        self.init_draw_pile(deck)
 
         self.draw(self.HAND_SIZE)
 
