@@ -1,3 +1,6 @@
+import cards
+from player import Player
+
 class Game(object):
 
     """
@@ -13,9 +16,9 @@ class Game(object):
 
     def initialize_cards(self):
         """Initializes the bank of cards depending on self.card_set."""
-        self.banked_cards = cards.CARD_SETS[card_set]
+        self.banked_cards = cards.CARD_SETS[self.card_set]
 
-        initial_deck = cards.STARTING_HAND
+        initial_deck = cards.STARTING_DECK
         self.p1 = Player(initial_deck)
         self.p2 = Player(initial_deck)
 
@@ -25,16 +28,14 @@ class Game(object):
         The main loop governs the swapping of turns and testing of game completion.
         """
         
-        while not self.is_over:
+        while not self.game_over():
             self.play_one_turn()
-            self.test_game_completion() 
 
         self.collect_stats()
         return self.winning_player
 
     def play_one_turn(self):
         """The current player plays one turn, as directed by their Player object."""
-
         #XXX: My laziness knows no bounds. Only allows two players.
         #XXX: I pass the whole game object through to players. Ugh.
         if self.current_player == 1:
@@ -42,8 +43,8 @@ class Game(object):
         else:
             self.p2.play_one_turn(self)
 
-    def test_game_completion(self):
-        """Test whether provinces are gone or >= 3 types of cards are gone."""
+    def game_over(self):
+        """Test if the game is complete."""
 
         if (self.banked_cards['Province'] == 0
                 or self.three_stacks_gone()):

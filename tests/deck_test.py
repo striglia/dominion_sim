@@ -4,33 +4,8 @@ from testify import assert_raises
 from deck import Deck
 from deck import DrawingNegativeCardsException
 from deck import DrawingWithNoCardsException
+from utility import cards_are_same
 import cards
-
-"""
-Some helper functions for these test cases.
-"""
-def cards_are_same(deck1, deck2):
-    """Tests that two sets of cards are identical up to ordering.
-    
-    As an added bonus, this can handle any combination of card lists
-    and card dicts.
-    """
-    deck1_dict = {}
-    deck2_dict = {}
-
-    # List -> Dict conversion
-    if isinstance(deck1, dict):
-        deck1_dict = deck1
-    else:
-        for card in deck1:
-            deck1_dict[card] = deck1_dict.get(card,0) + 1
-    if isinstance(deck2, dict):
-        deck2_dict = deck2
-    else:
-        for card in deck2:
-            deck2_dict[card] = deck2_dict.get(card,0) + 1
-
-    return deck1_dict == deck2_dict
 
 class DeckTestCase(TestCase):
     """Tests out the various deck-related methods and edge cases."""
@@ -59,7 +34,11 @@ class DeckTestCase(TestCase):
         assert_equal(same_hand, False)
 
     def test_draw_edge_amounts(self):
-        """Tests drawing -1 cards, 0 cards, all cards remaining, too many cards."""
+        """Tests drawing -1 cards, 0 cards, all cards remaining, too many cards.
+
+        Drawing -1 and too many should throw exceptions. Tests that all card
+        piles are the right size otherwise.
+        """
         deck = Deck()
         assert_raises(DrawingNegativeCardsException, deck.draw, -1)
 

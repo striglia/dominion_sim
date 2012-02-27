@@ -1,3 +1,5 @@
+from deck import Deck
+
 class Player(object):
 
     """

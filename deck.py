@@ -23,7 +23,7 @@ class Deck(object):
     # Default constants for the game
     HAND_SIZE = 5
 
-    def __init__(self, deck):
+    def __init__(self, deck=cards.STARTING_DECK):
         """Initializes the default deck (3 estate, 7 copper)."""
         self.draw_pile = []
         self.hand = []
@@ -71,6 +71,7 @@ class Deck(object):
 
 """
 These are here so we can have meaningful exception names.
+No actual functionality aside from the names.
 """
 class DrawingNegativeCardsException(Exception):
     pass

@@ -210,3 +210,13 @@ class Workshop(Card):
 
 
 STARTING_DECK = {Estate: 3, Copper: 7}
+CARD_SETS = {
+        'trivial': {
+            Province: 8,
+            Duchy: 8,
+            Estate: 8,
+            Gold: 30,
+            Silver: 40,
+            Copper: 60,
+            }
+        }
