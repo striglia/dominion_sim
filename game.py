@@ -10,17 +10,14 @@ class Game(object):
     #XXX: Currently defaults to playing with VP and Money only.
     card_set = 'trivial'
 
-    def __init__(self):
-        self.initialize_cards()
+    def __init__(self, deck=None, p1_class=Player, p2_class=Player):
+        """Initializes the bank, players and cards."""
         self.current_player = 1
-
-    def initialize_cards(self):
-        """Initializes the bank of cards depending on self.card_set."""
         self.banked_cards = cards.CARD_SETS[self.card_set]
 
-        initial_deck = cards.STARTING_DECK
-        self.p1 = Player(initial_deck)
-        self.p2 = Player(initial_deck)
+        initial_deck = deck or cards.STARTING_DECK
+        self.p1 = p1_class(initial_deck)
+        self.p2 = p2_class(initial_deck)
 
     def play_one_game(self):
         """Here is the logic required to run through to completion a single game of Dominion.
@@ -30,6 +27,7 @@ class Game(object):
         
         while not self.game_over():
             self.play_one_turn()
+            #import ipdb;ipdb.set_trace()
 
         self.collect_stats()
         return self.winning_player
@@ -43,10 +41,15 @@ class Game(object):
         else:
             self.p2.play_one_turn(self)
 
+    def collect_stats(self):
+        """Calculates useful statistics on this game."""
+        #TODO: Make this actually matter
+        self.winning_player = self.p1
+
     def game_over(self):
         """Test if the game is complete."""
 
-        if (self.banked_cards['Province'] == 0
+        if (self.banked_cards[cards.Province] == 0
                 or self.three_stacks_gone()):
             return True
         return False

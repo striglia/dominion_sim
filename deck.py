@@ -17,7 +17,8 @@ class Deck(object):
         action_coins - count of how many coins are available from actions this turn
 
     Convention will be that the 0th element of a list is the "top", where
-    this is a meaningful distinction.
+    this is a meaningful distinction. These are internally stored as lists,
+    since we actually care about order at this level.
     """
 
     # Default constants for the game
