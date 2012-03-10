@@ -1,3 +1,5 @@
+import copy
+
 import cards
 from player import Player
 
@@ -7,13 +9,12 @@ class Game(object):
     The main class which governs a single game of Dominion.
     """
 
-    #XXX: Currently defaults to playing with VP and Money only.
-    card_set = 'trivial'
-
     def __init__(self, deck=None, p1_class=Player, p2_class=Player):
         """Initializes the bank, players and cards."""
+        #XXX: Currently defaults to playing with VP and Money only.
+        self.card_set = 'trivial'
         self.current_player = 1
-        self.banked_cards = cards.CARD_SETS[self.card_set]
+        self.banked_cards = copy.deepcopy(cards.CARD_SETS[self.card_set])
 
         initial_deck = deck or cards.STARTING_DECK
         self.p1 = p1_class(initial_deck)
@@ -25,9 +26,8 @@ class Game(object):
         The main loop governs the swapping of turns and testing of game completion.
         """
         
-        while not self.game_over():
+        while not self._game_over():
             self.play_one_turn()
-            #import ipdb;ipdb.set_trace()
 
         self.collect_stats()
         return self.winning_player
@@ -36,24 +36,49 @@ class Game(object):
         """The current player plays one turn, as directed by their Player object."""
         #XXX: My laziness knows no bounds. Only allows two players.
         #XXX: I pass the whole game object through to players. Ugh.
+        
         if self.current_player == 1:
+            self.p1.new_hand()
             self.p1.play_one_turn(self)
+            self.current_player = 2
         else:
+            self.p2.new_hand()
             self.p2.play_one_turn(self)
+            self.current_player = 1
 
     def collect_stats(self):
         """Calculates useful statistics on this game."""
         #TODO: Make this actually matter
-        self.winning_player = self.p1
+        vp_p1 = self.p1.deck.calc_total_vp()
+        vp_p2 = self.p2.deck.calc_total_vp()
+        if vp_p1 > vp_p2:
+            self.winning_player = 1
+        elif vp_p1 < vp_p2:
+            self.winning_player = 2
+        else:
+            self.winning_player = None
 
-    def game_over(self):
+    def buy_card(self, card):
+        """Buys a card from the bank, decrementing the number left."""
+        if not self._can_buy(card):
+            raise CannotBuyException
+        self.banked_cards[card] -= 1
+
+    def _can_buy(self, card):
+        """Checks if the card is available from banked_cards."""
+        return self.banked_cards[card] > 0
+
+    def _game_over(self):
         """Test if the game is complete."""
 
         if (self.banked_cards[cards.Province] == 0
-                or self.three_stacks_gone()):
+                or self._three_stacks_gone()):
             return True
         return False
 
-    def three_stacks_gone(self):
+    def _three_stacks_gone(self):
         """Returns a boolean indicating whether three or more bank stacks are emptied."""
         return sum([1.0 for count in self.banked_cards.values() if count == 0])
+
+class CannotBuyException(Exception):
+    pass

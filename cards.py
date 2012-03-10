@@ -10,14 +10,14 @@ class Card(object):
     plus_cards - number of cards playing this adds (is_action should be True)
     plus_actions - number of actions playing this adds (is_action should be True) 
     plus_buys - number of buys playing this adds (is_action should be True)
-    plus_coins - number of coins playing this adds
+    plus_treasure - number of coins playing this adds
     plus_card_on_buy - a card (or None) you get upon purchase of this card
     """
     is_action = False
     plus_cards = 0
     plus_actions = 0
     plus_buys = 0
-    plus_coins = 0
+    plus_treasure = 0
     plus_card_on_buy = None
 
     """
@@ -33,7 +33,7 @@ class Card(object):
     def on_action(self, game):
         pass
     @staticmethod
-    def vp(deck):
+    def vp():
         return 0
 
 """Base Victory and Money cards."""
@@ -43,7 +43,7 @@ class Province(Card):
     is_implemented = True
 
     @staticmethod
-    def vp(deck):
+    def vp():
         return 6
 
 class Duchy(Card):
@@ -52,7 +52,7 @@ class Duchy(Card):
     is_implemented = True
  
     @staticmethod
-    def vp(deck):
+    def vp():
         return 3
 
 class Estate(Card):
@@ -61,7 +61,7 @@ class Estate(Card):
     is_implemented = True
 
     @staticmethod
-    def vp(deck):
+    def vp():
         return 1
 
 class Curse(Card):
@@ -70,25 +70,25 @@ class Curse(Card):
     is_implemented = True
 
     @staticmethod
-    def vp(deck):
+    def vp():
         return -1
 
 class Gold(Card):
     name = 'Gold'
     price = 6
-    plus_coins = 3
+    plus_treasure = 3
     is_implemented = True
 
 class Silver(Card):
     name = 'Silver'
     price = 3
-    plus_coins = 2
+    plus_treasure = 2
     is_implemented = True
 
 class Copper(Card):
     name = 'Copper'
     price = 0
-    plus_coins = 1
+    plus_treasure = 1
     is_implemented = True
 
 """Base set cards."""
@@ -110,7 +110,7 @@ class Chancellor(Card):
     name = 'Chancellor'
     price = 3
     is_action = True
-    plus_coins = 2
+    plus_treasure = 2
     is_implemented = False
 
 class Cellar(Card):
