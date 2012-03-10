@@ -87,6 +87,33 @@ class DeckTestCase(TestCase):
                 + len(deck.draw_pile) 
                 + len(deck.discard_pile), total_num_cards)
 
+class DeckHelpersTestCase(TestCase):
+    """Tests out the various deck-related helper methods."""
+
+    def test_can_buy(self):
+        """Test out the _can_buy helper method."""
+        deck = Deck()
+        deck.treasure = 3
+        deck.buys = 1
+
+        # Test too little treasure for the card
+        assert_equal(deck._can_buy(cards.Gold), False)
+        # Test just enough
+        assert_equal(deck._can_buy(cards.Silver), True)
+        # Test too much
+        assert_equal(deck._can_buy(cards.Copper), True)
+
+    def test_calc_total_vp(self):
+        """Test calculating the total vp in a player's deck."""
+        deck = Deck()
+
+        # Test that a default deck has 3 VP
+        assert_equal(deck.calc_total_vp(), 3)
+
+        # Test that adding a province gives 9 VP
+        deck.discard_pile.append(cards.Province)
+        assert_equal(deck.calc_total_vp(), 9)
+
 
 if __name__ == '__main__':
     run()

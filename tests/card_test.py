@@ -9,8 +9,7 @@ def verify_card(card):
         card.price >= 0,
         card.plus_cards >= 0,
         card.plus_buys >= 0,
-        card.plus_coins >= 0,
-        card.plus_coins >= 0,
+        card.plus_treasure >= 0,
         not card.is_action or 'on_action' not in card.__dict__,
         ]
     return all(rules)

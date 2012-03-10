@@ -1,6 +1,9 @@
 from game import Game
 from deck import Deck
-from player import MockPlayer
+from player import MockProvince
+from player import Mock3Stack
+from player import Moron
+from player import Money
 from utility import cards_are_same
 from utility import deck_has_cards
 import cards
@@ -23,5 +26,18 @@ class GameTestCase(TestCase):
 
     def test_basic_game(self):
         """Tests that a game can be played without exceptions or errors."""
-        game = Game(p1_class=MockPlayer, p2_class=MockPlayer)
+        # Test with province end condition
+        game = Game(p1_class=MockProvince, p2_class=MockProvince)
         game.play_one_game()
+
+        # Test with three stacks empty end condition
+        game = Game(p1_class=Mock3Stack, p2_class=Mock3Stack)
+        game.play_one_game()
+
+    def test_moron_vs_money(self):
+        """Test that Money beats Moron."""
+        #TODO: Make repeatedly testing games cleaner.
+        for _ in range(100):
+            game = Game(p1_class=Moron, p2_class=Money)
+            winner = game.play_one_game()
+            assert_equal(winner, 2)
