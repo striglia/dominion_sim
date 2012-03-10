@@ -1,0 +1,13 @@
+My little side-project, aimed at writing a full simulator for at least part of
+the card game Dominion.
+
+Initial proof of concept would be getting the game up and running with just VP
+and money cards, testing that games could be run successfully, testing that
+repeated simulations could result in different outcomes.
+
+After that, I'll start expanding card support with the goal of at least
+allowing the easier of the initial cards to be used (i.e. nothing requiring
+discarding knowledge, played card knowledge, or similarly hard features).
+
+If I get a little side experience with Python or TDD, then so be it. Above 
+all...it's just for fun. Sorry for the nasty code =)
