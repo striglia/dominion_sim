@@ -16,6 +16,11 @@ class Game(object):
         self.current_player = 1
         self.banked_cards = copy.deepcopy(cards.CARD_SETS[self.card_set])
 
+        # Variables for game stats
+        self.turn_num = 1
+        self.winning_player = []
+        self.player_vp = []
+
         initial_deck = deck or cards.STARTING_DECK
         self.p1 = p1_class(initial_deck)
         self.p2 = p2_class(initial_deck)
@@ -28,9 +33,10 @@ class Game(object):
         
         while not self._game_over():
             self.play_one_turn()
+            self.collect_stats()
+            self.turn_num += 1
 
-        self.collect_stats()
-        return self.winning_player
+        return self.winning_player[-1]
 
     def play_one_turn(self):
         """The current player plays one turn, as directed by their Player object."""
@@ -52,11 +58,12 @@ class Game(object):
         vp_p1 = self.p1.deck.calc_total_vp()
         vp_p2 = self.p2.deck.calc_total_vp()
         if vp_p1 > vp_p2:
-            self.winning_player = 1
+            self.winning_player.append(1)
         elif vp_p1 < vp_p2:
-            self.winning_player = 2
+            self.winning_player.append(2)
         else:
-            self.winning_player = None
+            self.winning_player.append(None)
+        self.player_vp.append((vp_p1, vp_p2))
 
     def buy_card(self, card):
         """Buys a card from the bank, decrementing the number left."""
