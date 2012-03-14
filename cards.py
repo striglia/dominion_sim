@@ -7,16 +7,24 @@ class Card(object):
     REQUIRED VARIABLES:
     name - name of this card. Capitalized.
     price - price of this card in coins
-    plus_cards - number of cards playing this adds (is_action should be True)
-    plus_actions - number of actions playing this adds (is_action should be True) 
-    plus_buys - number of buys playing this adds (is_action should be True)
-    plus_treasure - number of coins playing this adds
+
+    plus_cards_on_play - number of cards playing this adds (is_action should be True)
+    plus_actions_on_play - number of actions playing this adds (is_action should be True) 
+    plus_buys_on_play - number of buys playing this adds (is_action should be True)
+    plus_treasure_on_play - number of coins playing this adds
+
+    plus_treasure - number of coins holding this adds
     plus_card_on_buy - a card (or None) you get upon purchase of this card
     """
     is_action = False
-    plus_cards = 0
-    plus_actions = 0
-    plus_buys = 0
+    is_treasure = False
+    is_vp = False
+
+    plus_cards_on_play = 0
+    plus_actions_on_play = 0
+    plus_buys_on_play = 0
+    plus_treasure_on_play = 0
+
     plus_treasure = 0
     plus_card_on_buy = None
 
@@ -40,7 +48,7 @@ class Card(object):
 class Province(Card):
     name = 'Province'
     price = 8
-    is_implemented = True
+    is_vp = True
 
     @staticmethod
     def vp():
@@ -49,7 +57,7 @@ class Province(Card):
 class Duchy(Card):
     name = 'Duchy'
     price = 5
-    is_implemented = True
+    is_vp = True
  
     @staticmethod
     def vp():
@@ -58,7 +66,7 @@ class Duchy(Card):
 class Estate(Card):
     name = 'Estate'
     price = 2
-    is_implemented = True
+    is_vp = True
 
     @staticmethod
     def vp():
@@ -67,7 +75,7 @@ class Estate(Card):
 class Curse(Card):
     name = 'Curse'
     price = 0
-    is_implemented = True
+    is_vp = True
 
     @staticmethod
     def vp():
@@ -76,20 +84,20 @@ class Curse(Card):
 class Gold(Card):
     name = 'Gold'
     price = 6
+    is_treasure = True
     plus_treasure = 3
-    is_implemented = True
 
 class Silver(Card):
     name = 'Silver'
     price = 3
+    is_treasure = True
     plus_treasure = 2
-    is_implemented = True
 
 class Copper(Card):
     name = 'Copper'
     price = 0
+    is_treasure = True
     plus_treasure = 1
-    is_implemented = True
 
 """Base set cards."""
 class Adventurer(Card):
@@ -130,23 +138,34 @@ class Chapel(Card):
 
 class CouncilRoom(Card):
     name = 'Council Room'
+    is_action = True
     is_implemented = False
 
 class Feast(Card):
     name = 'Feast'
+    is_action = True
     is_implemented = False
 
 class Festival(Card):
     name = 'Festival'
+    price = 5
+    plus_treasure_on_play = 2
+    plus_actions_on_play = 2
+    plus_buys_on_play = 1
+    is_action = True
     is_implemented = False
 
 class Gardens(Card):
     name = 'Gardens'
+    is_vp = True
     is_implemented = False
 
 class Laboratory(Card):
     name = 'Laboratory'
-    is_implemented = False
+    price = 5
+    plus_actions_on_play = 1
+    plus_cards_on_play = 2
+    is_action = True
 
 class Library(Card):
     name = 'Library'
@@ -154,58 +173,81 @@ class Library(Card):
 
 class Market(Card):
     name = 'Market'
-    is_implemented = False
+    price = 5
+    plus_actions_on_play = 1
+    plus_cards_on_play = 1
+    plus_buys_on_play = 1
+    plus_treasure_on_play = 1
+    is_action = True
 
 class Militia(Card):
     name = 'Militia'
+    is_action = True
     is_implemented = False
 
 class Mine(Card):
     name = 'Mine'
+    is_action = True
     is_implemented = False
 
 class Moat(Card):
     name = 'Moat'
+    is_action = True
     is_implemented = False
 
 class Moneylender(Card):
     name = 'Moneylender'
+    is_action = True
     is_implemented = False
 
 class Remodel(Card):
     name = 'Remodel'
+    is_action = True
     is_implemented = False
 
 class Smithy(Card):
     name = 'Smithy'
-    is_implemented = False
+    price = 4
+    plus_actions_on_play = 3
+    is_action = True
 
 class Spy(Card):
     name = 'Spy'
+    is_action = True
     is_implemented = False
 
 class Thief(Card):
     name = 'Thief'
+    is_action = True
     is_implemented = False
 
 class ThroneRoom(Card):
     name = 'ThroneRoom'
+    is_action = True
     is_implemented = False
 
 class Village(Card):
     name = 'Village'
-    is_implemented = False
+    price = 3
+    plus_card_on_play = 1
+    plus_actions_on_play = 2
+    is_action = True
 
 class Witch(Card):
     name = 'Witch'
+    is_action = True
     is_implemented = False
 
 class Woodcutter(Card):
     name = 'Woodcutter'
-    is_implemented = False
+    price = 3
+    plus_treasure_on_play = 2
+    plus_buys_on_play = 1
+    is_action = True
 
 class Workshop(Card):
     name = 'Workshop'
+    is_action = True
     is_implemented = False
 
 
