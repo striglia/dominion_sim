@@ -80,8 +80,6 @@ class Deck(object):
         self.actions = 1
         self.treasure = 0
         for card in self.hand:
-            self.buys += card.plus_buys
-            self.actions += card.plus_actions
             self.treasure += card.plus_treasure
 
     def _can_buy(self, card):
@@ -108,6 +106,44 @@ class Deck(object):
         else:
             raise CannotBuyException
 
+    def _can_action(self, card):
+        """Tests whether the current hand has enough actions and play an action card."""
+        return self.actions >= 1
+
+    def play_action(self, card):
+        """Plays an action card from the player's hand.
+        
+        Responsible for the following actions:
+            - check if the card can be played (available actions)
+            - check if the card exists in the hand
+            if so,
+            - transfer card from hand to played_pile
+            - add actions/buys/treasure as appropriate
+        """
+        # Check if we have enough actions and this card is in our hand
+        if self.can_action(card) and card in self.hand:
+            # Remove an action for playing this card
+            self.actions -= 1
+            
+            # Add any actions, treasure, buys and/or cards
+            self.buys += card.plus_buys_on_play
+            self.actions += card.plus_actions_on_play
+            self.treasure += card.plus_treasure_on_play
+            self.draw(card.plus_cards_on_play)
+
+            # Move card from hand to played_pile
+            self._play_card_from_hand(card)
+        else:
+            raise CannotActionException
+
+        return self.actions >= 1
+
+    def _play_card_from_hand(self, card):
+        """Take card from the hand and transfer to played_pile. DO NOT trigger
+        any of the cards effects."""
+        self.hand.remove(card)
+        self.played_pile.append(card)
+
     def reshuffle_discard(self):
         """Reshuffles the discard pile into the draw pile."""
         self.draw_pile = self.discard_pile[:]
@@ -132,4 +168,7 @@ class DrawingWithNoCardsException(Exception):
     pass
 
 class CannotBuyException(Exception):
+    pass
+
+class CannotActionException(Exception):
     pass
