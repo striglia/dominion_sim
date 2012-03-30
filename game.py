@@ -65,6 +65,10 @@ class Game(object):
             self.winning_player.append(None)
         self.player_vp.append((vp_p1, vp_p2))
 
+    def num_in_bank(self, card):
+        """Returns the number of this card in the bank."""
+        return self.banked_cards[card]
+
     def buy_card(self, card):
         """Buys a card from the bank, decrementing the number left."""
         if not self._can_buy(card):

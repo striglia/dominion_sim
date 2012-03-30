@@ -27,6 +27,10 @@ class Player(object):
         self.deck.draw(self.deck.HAND_SIZE)
         self.deck._update_deck_vars()
 
+    def num_in_bank(self, card, game):
+        """Returns the number of this card left in the bank."""
+        return game.num_in_bank(card)
+
     def play_one_turn(self, game):
         raise NotImplementedError
 
@@ -57,6 +61,34 @@ class Money(Player):
         if self.can_buy(cards.Province):
             self.buy_card(cards.Province, game)
         if self.can_buy(cards.Gold):
+            self.buy_card(cards.Gold, game)
+        elif self.can_buy(cards.Silver):
+            self.buy_card(cards.Silver, game)
+
+class BigMoney(Player):
+
+    """
+    Obeys these rules, in order:
+        - Province: always
+        - Duchy: <= d provinces left in bank
+        - Estate: <= e provinces left in bank
+        - Gold: always
+        - Silver: always
+    """
+
+    # Hyperparameters set by fiat (for now)
+    d = 5
+    e = 2
+
+    def play_one_turn(self, game):
+        """Buys cards in this order."""
+        if self.can_buy(cards.Province):
+            self.buy_card(cards.Province, game)
+        elif self.num_in_bank(cards.Province, game) < self.d and self.can_buy(cards.Duchy):
+            self.buy_card(cards.Duchy, game)
+        elif self.num_in_bank(cards.Province, game) < self.d and self.can_buy(cards.Estate):
+            self.buy_card(cards.Estate, game)
+        elif self.can_buy(cards.Gold):
             self.buy_card(cards.Gold, game)
         elif self.can_buy(cards.Silver):
             self.buy_card(cards.Silver, game)

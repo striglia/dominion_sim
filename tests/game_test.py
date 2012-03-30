@@ -4,6 +4,7 @@ from player import MockProvince
 from player import Mock3Stack
 from player import Moron
 from player import Money
+from player import BigMoney
 from utility import cards_are_same
 from utility import deck_has_cards
 import cards
@@ -39,5 +40,13 @@ class GameTestCase(TestCase):
         #TODO: Make repeatedly testing games cleaner.
         for _ in range(100):
             game = Game(p1_class=Moron, p2_class=Money)
+            winner = game.play_one_game()
+            assert_equal(winner, 2)
+
+    def test_moron_vs_money(self):
+        """Test that Money beats Moron."""
+        #TODO: Make repeatedly testing games cleaner.
+        for _ in range(100):
+            game = Game(p1_class=Money, p2_class=BigMoney)
             winner = game.play_one_game()
             assert_equal(winner, 2)
