@@ -1,18 +1,9 @@
 import itertools
 import random
 
-class CardNotInHandError(Exception):
-    """Raised when a player attemps to play a card he doesn't have in hand."""
+class ActionError(BaseException):
+    """Raised when a player attempts to illegally play a card as an action."""
     pass
-
-class NoActionsAvailable(Exception):
-    """Raised when a player attemps to play a card without an action available."""
-    pass
-
-class NotActionCardError(Exception):
-    """Raised when a player attemps to play a card that isn't an Action card."""
-    pass
-
 
 class Deck(object):
     """
@@ -54,12 +45,10 @@ class Deck(object):
 
     def play_action(self, card):
         """Attempts to play the card from this deck's hand."""
-        if card not in self.hand:
-            raise CardNotInHandError
-        if not card.is_action:
-            raise NotActionCardError
-        if self.actions < 1:
-            raise NoActionsAvailableError
+        if (card not in self.hand
+                or not card.is_action
+                or self.actions < 1):
+            raise ActionError
 
         self.hand.remove(card)
         self.played.append(card)
@@ -77,3 +66,7 @@ class Deck(object):
     def count_treasure(self):
         """Counts the treasure in hand."""
         return sum(c.treasure for c in self.hand)
+
+    def can_buy(self, card):
+        """Check if there is sufficient treasure and buys."""
+        return self.buys > 0 and self.treasure >= card.cost

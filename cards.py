@@ -150,6 +150,8 @@ class Woodcutter(Card):
     plus_buys = 1
     plus_treasure = 2
 
+starting_cards = [Estate, Estate, Estate, Copper, Copper,
+        Copper, Copper, Copper, Copper, Copper]
 trivial_deck = {
         Province: 8,
         Duchy: 8,
