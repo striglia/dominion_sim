@@ -82,9 +82,9 @@ def check_vp(self, num_vp):
 def check_treasure(self, num_treasure):
     assert world.deck.count_treasure() == int(num_treasure)
 
-@step('I check the size of my (\w+)')
-def check_size(self, pile):
-    return len(getattr(world.deck, pile))
+@step('I check the size of my (\w+) is (\d+)')
+def check_size(self, pile, size):
+    assert len(getattr(world.deck, pile)) == int(size)
 
 @step('I check if I can buy a card worth (\d+)')
 def can_buy_card(self, cost):
