@@ -90,7 +90,7 @@ class Copper(Card):
     plus_buys = 0
     plus_treasure = 0
 
-class Villiage(Card):
+class Village(Card):
     is_action = True
     cost = 3
     vp = 0
