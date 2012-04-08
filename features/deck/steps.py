@@ -1,6 +1,7 @@
+from mock import Mock
+
 from lettuce import step
 from lettuce import world
-from dingus import Dingus
 from nose.tools import assert_raises
 
 from deck import Deck
@@ -15,7 +16,7 @@ def have_dummy_deck(self):
 
 @step('I have a new deck')
 def have_new_deck(self):
-    starting_cards = [Dingus('card %d' % i) for i in range(10)]
+    starting_cards = [Mock() for i in range(10)]
     world.deck = Deck(starting_cards)
 
 # Setters
@@ -23,9 +24,9 @@ def have_new_deck(self):
 @step('My (\w+) has (\d+) cards with (\d+) (\w+)')
 def piles_have_cards_with_vp(self, pile, num_cards, num_attr, attr):
     if attr == 'VP':
-        setattr(world.deck, pile, [Dingus('fake card %d' % i, vp=int(num_attr)) for i in range(int(num_cards))])
+        setattr(world.deck, pile, [Mock(vp=int(num_attr)) for i in range(int(num_cards))])
     elif attr == 'treasure':
-        setattr(world.deck, pile, [Dingus('fake card %d' % i, treasure=int(num_attr)) for i in range(int(num_cards))])
+        setattr(world.deck, pile, [Mock(treasure=int(num_attr)) for i in range(int(num_cards))])
 
 @step('I have (\d+) buys')
 def have_n_buys(self, number):
@@ -41,7 +42,7 @@ def have_n_actions(self, num_actions):
 
 @step('I have (\d+) cards in my (\w+)')
 def have_n_cards_in_my_y(self, num_cards, pile):
-    setattr(world.deck, pile, [Dingus('fake card %d' % i) for i in range(int(num_cards))])
+    setattr(world.deck, pile, [Mock() for i in range(int(num_cards))])
 
 @step('I draw (\d+) cards')
 def draw_n_cards(self, num):
@@ -53,8 +54,7 @@ def draw_n_cards(self, num):
 @step('Playing a (\w+) should (\w+) raise an error')
 def action_may_raise_error(self, card_type, yes_or_no):
     """This is imperfect, but for now we will always make sure this doesn't throw a CardNotInHandError."""
-    card = Dingus('action_to_play',
-            is_action=True,
+    card = Mock(is_action=True,
             plus_actions = 0,
             plus_buys = 0,
             plus_cards = 0,
@@ -88,7 +88,7 @@ def check_size(self, pile, size):
 
 @step('I check if I can buy a card worth (\d+)')
 def can_buy_card(self, cost):
-    card = Dingus('fake card', cost=int(cost))
+    card = Mock(cost=int(cost))
     world.response = world.deck.can_buy(card)
 
 @step("I am told (\w+)")
